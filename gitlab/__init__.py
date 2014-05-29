@@ -8,7 +8,7 @@ import requests
 import json
 import markdown
 from . import exceptions
-
+from base64 import b64decode
 
 class Gitlab(object):
     """
@@ -1578,6 +1578,23 @@ class Gitlab(object):
 
         if request.status_code == 201:
             return True
+        else:
+            return False
+
+    def getfile(self, project_id, file_path, ref):
+        """
+        Creates a new file in the repository
+        :param project_id: project id
+        :param file_path: Full path to new file. Ex. lib/class.rb
+        :param ref: Commit hash or tag name
+        :return: content of the file if success, false if not
+        """
+        data = {"file_path": file_path, "ref": ref}
+        request = requests.get(self.projects_url + "/" + str(project_id) + "/repository/files",
+                               verify=self.verify_ssl, headers=self.headers, data=data)
+
+        if request.status_code == 200:
+            return b64decode(json.loads(request.content.decode("utf-8"))['content'])
         else:
             return False
 
