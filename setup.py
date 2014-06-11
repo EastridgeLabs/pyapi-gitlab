@@ -3,7 +3,7 @@
 from setuptools import setup, find_packages
 setup(
     name = "pyapi-gitlab",
-    version = "v6.2.3patch1",
+    version = "6.2.3patch1",
     packages = find_packages(),
     install_requires = ['requests', 'markdown'],
     # metadata for upload to PyPI
